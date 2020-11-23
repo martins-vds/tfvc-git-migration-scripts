@@ -11,7 +11,7 @@ param (
     [ValidateNotNullOrEmpty()]
     [string]
     $Description,
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]
     $Team

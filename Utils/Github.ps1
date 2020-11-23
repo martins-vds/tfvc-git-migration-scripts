@@ -1,7 +1,13 @@
 . .\Utils\Process.ps1
 
 function Create-GithubRepo([string] $Name, [string]$Description, [string] $Team, [System.IO.FileInfo]$RepoDirectory){
-    $cmd = Execute-Github -ArgumentList "$Name --description $Description --team $Team --confirm --private" -RepoDirectory $RepoDirectory
+    $argList = "$Name --description $Description --confirm --private"
+    
+    if(![string]::IsNullOrWhiteSpace($Team)){
+        $argList = $argList + "--team $Team"
+    }
+
+    $cmd = Execute-Github -ArgumentList $argList -RepoDirectory $RepoDirectory
 
     if ($cmd.ExitCode -gt 0) {
         throw "$($cmd.StandardError)"

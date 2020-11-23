@@ -3,7 +3,7 @@ param (
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [System.IO.FileInfo]$GitRepoDirectory,
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]  
     [ValidateScript( {
             if (-Not ($_ | Test-Path -PathType Leaf) ) {

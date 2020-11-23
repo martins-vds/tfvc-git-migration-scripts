@@ -7,7 +7,7 @@ function Execute-Command ($FilePath, $ArgumentList, $WorkingDirectory)
     $pinfo.UseShellExecute = $false
     $pinfo.Arguments = $ArgumentList
     $pinfo.WorkingDirectory = $WorkingDirectory
-    $pinfo.CreateNoWindow = $true
+    # $pinfo.CreateNoWindow = $true
 
     $p = New-Object System.Diagnostics.Process
     $p.StartInfo = $pinfo
