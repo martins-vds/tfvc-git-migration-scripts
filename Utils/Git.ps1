@@ -72,6 +72,10 @@ function Remove-GitSVNConfigs([System.IO.FileInfo]$RepoDirectory){
     Remove-GitConfigs -NamePattern "^svn" -RepoDirectory $RepoDirectory
 }
 
+function Remove-GitTfsConfigs([System.IO.FileInfo]$RepoDirectory){
+    Remove-GitConfigs -NamePattern "tfs" -RepoDirectory $RepoDirectory
+}
+
 function Remove-GitConfigs ([string] $NamePattern, [System.IO.FileInfo]$RepoDirectory) {
     $configs = Get-GitConfigs -NamePattern $NamePattern -RepoDirectory $RepoDirectory
 
