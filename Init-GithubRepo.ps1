@@ -2,33 +2,19 @@
 param (
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [System.IO.FileInfo]$GitRepoDirectory,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]  
-    [ValidateScript( {
-            if (-Not ($_ | Test-Path -PathType Leaf) ) {
-                throw "The Path argument must be a file. Folder paths are not allowed."
-            }
-
-            return $true
-        })]
-    [System.IO.FileInfo]$AuthorsFile,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()] 
-    [string] $TfsRepoPath,
+    [System.IO.FileInfo]$GitRepoDirectory,  
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [ValidateScript( {
-        if (-Not ($_ | Test-Path -PathType Leaf) ) {
-            throw "The Path argument must be a file. Folder paths are not allowed."
-        }
-
-        return $true
-    })]
-    [System.IO.FileInfo] $IgnoreFile,
+    [string]
+    $Name,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [System.Uri] $TfsUrl
+    [string]
+    $Description,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]
+    $Team
 )
 
 . .\Utils\Github.ps1
