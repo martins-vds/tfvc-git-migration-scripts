@@ -37,7 +37,7 @@ function Execute-CommandWithInput ($FilePath, $ArgumentList, $StdInput, $Working
     $p.StartInfo = $pinfo
     $p.Start() | Out-Null
     
-    Start-Sleep -Milliseconds 600
+    Start-Sleep -Seconds 2
     $p.StandardInput.WriteLine($StdInput)
 
     $p.WaitForExit()
