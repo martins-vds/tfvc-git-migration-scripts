@@ -38,6 +38,8 @@ function Execute-CommandWithInput ($FilePath, $ArgumentList, $StdInput, $Working
     $p.Start() | Out-Null
     $p.WaitForExit()
 
+    Start-Sleep -Milliseconds 600
+
     $p.StandardInput.WriteLine($StdInput)
 
     [pscustomobject]@{
