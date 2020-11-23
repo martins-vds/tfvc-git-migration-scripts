@@ -2,7 +2,11 @@
 param (
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
-    [System.IO.FileInfo]$GitRepoDirectory,  
+    [System.IO.FileInfo]$GitRepoDirectory,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string]
+    $Token,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [string]
@@ -24,7 +28,7 @@ if (-Not (Test-Path -Path $GitRepoDirectory)) {
 }
 
 try {
-    Login-Github -RepoDirectory $GitRepoDirectory
+    Login-Github -Token $Token -RepoDirectory $GitRepoDirectory
 
     Create-GithubRepo -Name $Name -Description $Description -Team $Team -RepoDirectory $GitRepoDirectory
     
