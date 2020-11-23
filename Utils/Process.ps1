@@ -36,11 +36,11 @@ function Execute-CommandWithInput ($FilePath, $ArgumentList, $StdInput, $Working
     $p = New-Object System.Diagnostics.Process
     $p.StartInfo = $pinfo
     $p.Start() | Out-Null
-    $p.WaitForExit()
-
+    
     Start-Sleep -Milliseconds 600
-
     $p.StandardInput.WriteLine($StdInput)
+
+    $p.WaitForExit()
 
     [pscustomobject]@{
         StandardOutput = $p.StandardOutput.ReadToEnd()
