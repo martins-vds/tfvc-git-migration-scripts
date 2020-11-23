@@ -19,6 +19,10 @@ param (
 
 . .\Utils\Github.ps1
 
+if (-Not (Test-Path -Path $GitRepoDirectory)) {
+    New-Item -Path $GitRepoDirectory -Type Directory | Out-Null
+}
+
 try {
     Login-Github -RepoDirectory $GitRepoDirectory
 
