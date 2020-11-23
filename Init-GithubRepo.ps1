@@ -34,7 +34,6 @@ try {
     
     Write-Host "Successfully created Github repo." -ForegroundColor Green
 }
-catch {
-    # Remove-GitSVNConfigs -RepoDirectory $GitRepoDirectory    
+catch {  
     Write-Error "Failed to create Github repo. Reason: $($_)"
 }

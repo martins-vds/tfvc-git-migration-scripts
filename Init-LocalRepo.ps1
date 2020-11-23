@@ -3,16 +3,9 @@ param (
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [System.IO.FileInfo]$GitRepoDirectory,
-    [Parameter(Mandatory = $false)]
-    [ValidateNotNullOrEmpty()]  
-    [ValidateScript( {
-            if (-Not ($_ | Test-Path -PathType Leaf) ) {
-                throw "The Path argument must be a file. Folder paths are not allowed."
-            }
-
-            return $true
-        })]
-    [System.IO.FileInfo]$AuthorsFile,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [System.Uri] $TfsUrl,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()] 
     [string] $TfsRepoPath,
@@ -25,10 +18,7 @@ param (
 
         return $true
     })]
-    [System.IO.FileInfo] $IgnoreFile,
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [System.Uri] $TfsUrl
+    [System.IO.FileInfo] $IgnoreFile
 )
 
 . .\Utils\Git.ps1
@@ -43,7 +33,7 @@ try {
     Write-Host "Successfully initialized local git repo." -ForegroundColor Green
 }
 catch {
-    # Remove-GitSVNConfigs -RepoDirectory $GitRepoDirectory    
+    Remove-GitTfsConfigs -RepoDirectory $GitRepoDirectory    
     Write-Error "Failed to initialize local git repo. Reason: $($_)"
 }
 
