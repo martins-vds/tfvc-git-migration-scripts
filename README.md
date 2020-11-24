@@ -11,8 +11,10 @@
 git clone https://github.com/martins-vds/tfvc-git-migration-scripts.git
 git submodule update --init
 ```
-    - If this repo is already cloned locally, pull the latest changes:
-    - `git pull --recurse-submodules`
+- If this repo is already cloned locally, pull the latest changes:
+```bash
+git pull --recurse-submodules
+```
 2. Initialize the local git repo which will be the target of the TFVC migration
 ```posh
 .\Init-LocalRepo.ps1
@@ -25,9 +27,9 @@ git submodule update --init
 ```posh
 .\Pull-Tfs.ps1
 ```
-> :warning::warning::warning::warning::warning::warning::warning::warning: 
+> :warning::warning::warning: 
 > Make sure that the code builds correctly before moving on to the next step 
-> :warning::warning::warning::warning::warning::warning::warning::warning: 
+> :warning::warning::warning:
 5. Initialize GitVersion
 ```posh
 .\Init-GitVersion.ps1
