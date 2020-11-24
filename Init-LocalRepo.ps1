@@ -21,19 +21,23 @@ param (
     [System.IO.FileInfo] $IgnoreFile
 )
 
-. .\Utils\Git.ps1
+. .\Utils\GitTfs.ps1
 
 if (-Not (Test-Path -Path $GitRepoDirectory)) {
     New-Item -Path $GitRepoDirectory -Type Directory | Out-Null
 }
 
 try {
-    Init-GitTfs -TfsUrl $TfsUrl -TfsRepoPath $TfsRepoPath -IgnoreFile $IgnoreFile -RepoDirectory $GitRepoDirectory
+    Write-Host "Initializing local git repo..." -ForegroundColor White
+
+    Init-GitTfs -TfsUrl $TfsUrl -TfsRepoPath $TfsRepoPath -IgnoreFile $IgnoreFile -RepoDirectory $GitRepoDirectory | Out-Null
     
     Write-Host "Successfully initialized local git repo." -ForegroundColor Green
 }
 catch {
-    Remove-GitTfsConfigs -RepoDirectory $GitRepoDirectory    
+    Cleanup-GitTfs -RepoDirectory $GitRepoDirectory | Out-Null
+    Remove-GitTfsConfigs -RepoDirectory $GitRepoDirectory | Out-Null
+    
     Write-Error "Failed to initialize local git repo. Reason: $($_)"
 }
 

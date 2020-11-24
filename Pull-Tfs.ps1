@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $true)]    
     [ValidatePattern("^\d+$")]
     [string]$Changeset,  
     [Parameter(Mandatory = $true)]
@@ -16,22 +16,43 @@ param (
     [System.IO.FileInfo]$GitRepoDirectory
 )
 
-. .\Utils\Git.ps1
+. .\Utils\GitTfs.ps1
 
-$tfsConfigs = Get-GitTfsConfigs -RepoDirectory $GitRepoDirectory
+# $tfsConfigs = Get-GitTfsConfigs -RepoDirectory $GitRepoDirectory
 
-if($tfsConfigs.Count -lt 7){
-    Write-Error "Failed to fetch from TFS. Reason: The repo '$($GitRepoDirectory.Name)' has not been properly initialized."
-    Exit
+# if($tfsConfigs.Count -lt 7){
+#     Write-Error "Failed to fetch from TFS. Reason: The repo '$($GitRepoDirectory.Name)' has not been properly initialized."
+#     Exit
+# }
+
+function Remove-ReadOnlyAttribute ([System.IO.FileInfo] $RepoDirectory) {
+    Get-ChildItem -Path $RepoDirectory -File -Exclude .\.git -Recurse | ForEach-Object {
+        $_.IsReadOnly = $false
+    }
 }
 
 Measure-Command {
     try {
-        Pull-GitTfs -Changeset $Changeset -RepoDirectory $GitRepoDirectory
+        Write-Host "Pulling from TFS..." -ForegroundColor White
 
-        Write-Host "Pull succeeded." -ForegroundColor Green
+        Pull-GitTfs -Changeset $Changeset -RepoDirectory $GitRepoDirectory | Out-Null
+
+        Write-Host "Successfully pulled from TFS." -ForegroundColor Green
     }
     catch {
         Write-Error "Failed to pull from TFS. Reason: $($_)"
+        return
+    }
+
+    try {
+        Write-Host "Removing read-only attribute from files..." -ForegroundColor White
+
+        Remove-ReadOnlyAttribute -RepoDirectory $GitRepoDirectory
+
+        Write-Host "Successfully removed read-only attributes." -ForegroundColor Green
+    }
+    catch {
+        Write-Error "Failed to remove read-only attribute from files. Reason: $($_)"
+        return
     }
 }

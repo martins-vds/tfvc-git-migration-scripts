@@ -28,11 +28,17 @@ if (-Not (Test-Path -Path $GitRepoDirectory)) {
 }
 
 try {
-    Login-Github -Token $Token -RepoDirectory $GitRepoDirectory
+    Write-Host "Loging in..." -ForegroundColor White
 
-    Create-GithubRepo -Name $Name -Description $Description -Team $Team -RepoDirectory $GitRepoDirectory
+    Login-Github -Token $Token -RepoDirectory $GitRepoDirectory | Out-Null
+
+    Write-Host "Logged in." -ForegroundColor Green
+
+    Write-Host "Creating Github repo..." -ForegroundColor White
+
+    $output = Create-GithubRepo -Name $Name -Description $Description -Team $Team -RepoDirectory $GitRepoDirectory
     
-    Write-Host "Successfully created Github repo." -ForegroundColor Green
+    Write-Host "Successfully created Github repo: $($output.StandardOutput)" -ForegroundColor Green
 }
 catch {  
     Write-Error "Failed to create Github repo. Reason: $($_)"

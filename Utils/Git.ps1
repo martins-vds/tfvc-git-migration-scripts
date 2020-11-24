@@ -1,46 +1,46 @@
 . .\Utils\Process.ps1
 
-function Init-GitSVN ($Trunk, $Ignore, [System.Uri] $SvnUrl, [System.IO.FileInfo]$RepoDirectory) {
-    $cmd = Execute-Git -ArgumentList "svn init --prefix=svn/ --trunk $Trunk --ignore-paths=""$Ignore"" $SvnUrl" -RepoDirectory $RepoDirectory
-    if ($cmd.ExitCode -gt 0) {
-        throw "$($cmd.StandardError)"
-    }
-}
-
-function Init-GitTfs ([System.Uri] $TfsUrl, [string] $TfsRepoPath, [System.IO.FileInfo] $IgnoreFile, [System.IO.FileInfo]$RepoDirectory) {
-    $cmd = Execute-Git -ArgumentList "tfs init --autocrlf=true --gitignore=""$IgnoreFile"" $TfsUrl ""$TfsRepoPath""" -RepoDirectory $RepoDirectory
-    if ($cmd.ExitCode -gt 0) {
-        throw "$($cmd.StandardError)"
-    }
-}
-
 function Add-GitConfig ([string] $Name, [string] $Value, [System.IO.FileInfo]$RepoDirectory) {
-    $cmd = Execute-Git -ArgumentList "config --add $Name ""$Value""" -RepoDirectory $RepoDirectory
-    if ($cmd.ExitCode -gt 0) {
-        throw "$($cmd.StandardError)"
-    }
+    Execute-Git -ArgumentList "config --add $Name ""$Value""" -RepoDirectory $RepoDirectory
+}
+
+function Stage-File([string] $File, [System.IO.FileInfo]$RepoDirectory){
+    Execute-Git -ArgumentList "add $File" -RepoDirectory $RepoDirectory
+}
+
+function Create-Commit([string] $Message, [System.IO.FileInfo]$RepoDirectory){
+    Execute-Git -ArgumentList "commit -m ""$Message""" -RepoDirectory $RepoDirectory
+}
+
+function Create-Tag([string] $Tag, [System.IO.FileInfo]$RepoDirectory){
+    Execute-Git -ArgumentList "tag v$Tag" -RepoDirectory $RepoDirectory
 }
 
 function Create-Branch ([string] $BaseBranch, [string] $NewBranch, [System.IO.FileInfo]$RepoDirectory) {
-    $cmd = Execute-Git -ArgumentList "checkout $BaseBranch" -RepoDirectory $RepoDirectory
-    
-    if ($cmd.ExitCode -gt 0) {
-        throw "$($cmd.StandardError)"
-    }
-
-    $cmd = Execute-Git -ArgumentList "branch $NewBranch" -RepoDirectory $RepoDirectory
-
-    if ($cmd.ExitCode -gt 0) {
-        throw "$($cmd.StandardError)"
-    }
+    Execute-Git -ArgumentList "checkout $BaseBranch" -RepoDirectory $RepoDirectory
+    Execute-Git -ArgumentList "branch $NewBranch" -RepoDirectory $RepoDirectory
 }
 
-function Get-GitSVNConfigs([System.IO.FileInfo]$RepoDirectory) {
-    Get-GitConfigs -NamePattern "^svn" -RepoDirectory $RepoDirectory
+function List-Branches([System.IO.FileInfo]$RepoDirectory, [bool] $Remote = $false){
+    $cmd = Execute-Git -ArgumentList "branch $($Remote ? '-r' : '')" -RepoDirectory $RepoDirectory
+
+    $output = $cmd.StandardOutput
+
+    $branches = @(
+        if (![string]::IsNullOrWhiteSpace($output)) { 
+            $output -split "\n" | ForEach-Object { 
+                if (-not [string]::IsNullOrWhiteSpace($_)) {
+                    $_.Trim()
+                } 
+            } | Sort-Object -Unique
+        }
+    )
+
+    return $branches
 }
 
-function Get-GitTfsConfigs([System.IO.FileInfo]$RepoDirectory) {
-    Get-GitConfigs -NamePattern "tfs" -RepoDirectory $RepoDirectory
+function Delete-Branch ([string] $Branch, [System.IO.FileInfo]$RepoDirectory, [bool] $Remote = $false) {
+    Execute-Git -ArgumentList "branch $($Remote ? '-r' : '') -D $Branch" -RepoDirectory $RepoDirectory
 }
 
 function Get-GitConfigs ([string] $NamePattern, [System.IO.FileInfo]$RepoDirectory) {
@@ -66,18 +66,7 @@ function Get-GitConfigs ([string] $NamePattern, [System.IO.FileInfo]$RepoDirecto
 }
 
 function Remove-GitConfig ([string] $Config, [System.IO.FileInfo]$RepoDirectory) {
-    $cmd = Execute-Git -ArgumentList "config --unset-all $Config" -RepoDirectory $RepoDirectory
-    if ($cmd.ExitCode -gt 0) {
-        throw "$($cmd.StandardError)"
-    }
-}
-
-function Remove-GitSVNConfigs([System.IO.FileInfo]$RepoDirectory){
-    Remove-GitConfigs -NamePattern "^svn" -RepoDirectory $RepoDirectory
-}
-
-function Remove-GitTfsConfigs([System.IO.FileInfo]$RepoDirectory){
-    Remove-GitConfigs -NamePattern "tfs" -RepoDirectory $RepoDirectory
+    Execute-Git -ArgumentList "config --unset-all $Config" -RepoDirectory $RepoDirectory
 }
 
 function Remove-GitConfigs ([string] $NamePattern, [System.IO.FileInfo]$RepoDirectory) {
@@ -96,45 +85,24 @@ function Remove-GitConfigs ([string] $NamePattern, [System.IO.FileInfo]$RepoDire
     }
 }
 
-function Fetch-GitSVN {
-    param (
-        [Parameter(Mandatory = $true)]
-        [ValidatePattern("^\d+$")]
-        [string] $Revision,
-        [Parameter()]
-        [System.IO.FileInfo]$RepoDirectory
-    )
-
-    $cmd = Execute-Git -ArgumentList "svn fetch --log-window-size=100000 -r$($Revision):HEAD --no-follow-parent --quiet --quiet" -RepoDirectory $RepoDirectory
-
-    if ($cmd.ExitCode -gt 0) {
-        throw "$($cmd.StandardError)"
-    }
-}
-
-function Cleanup-GitTfs([System.IO.FileInfo]$RepoDirectory){
-    $cmd = Execute-Git -ArgumentList "tfs cleanup" -RepoDirectory $RepoDirectory
-    if ($cmd.ExitCode -gt 0) {
-        throw "$($cmd.StandardError)"
-    }
-}
-
-function Pull-GitTfs {
-    param (
-        [Parameter(Mandatory = $true)]
-        [ValidatePattern("^\d+$")]
-        [string] $Changeset,
-        [Parameter()]
-        [System.IO.FileInfo] $RepoDirectory
-    )
-
-    $cmd = Execute-Git -ArgumentList "tfs pull -c $($Changeset)" -RepoDirectory $RepoDirectory
-
-    if ($cmd.ExitCode -gt 0) {
-        throw "$($cmd.StandardError)"
-    }
+function Push-Git ([System.IO.FileInfo]$RepoDirectory) {
+    Execute-Git -ArgumentList "push --all origin" -RepoDirectory $RepoDirectory
+    Execute-Git -ArgumentList "push origin --tags" -RepoDirectory $RepoDirectory
 }
 
 function Execute-Git([string]$ArgumentList, [System.IO.FileInfo]$RepoDirectory) {
-    Execute-Command -FilePath "git" -ArgumentList $ArgumentList -WorkingDirectory $RepoDirectory
+    $cmd = $null
+    
+    try {
+        $cmd = Execute-Command -FilePath "git" -ArgumentList $ArgumentList -WorkingDirectory $RepoDirectory
+    }
+    catch {
+        throw $_.ErrorDetails
+    }
+
+    if ($cmd.ExitCode -gt 0) {
+        throw "$($cmd.StandardError)"
+    }
+
+    return $cmd
 }
