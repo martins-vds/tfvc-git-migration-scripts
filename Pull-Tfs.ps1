@@ -2,7 +2,7 @@
 param (
     [Parameter(Mandatory = $true)]
     [ValidatePattern("^\d+$")]
-    [string]$Changeset,
+    [string]$Changeset,  
     [Parameter(Mandatory = $true)]
     [ValidateScript( {
             if ( -Not ($_ | Test-Path) ) {
@@ -18,16 +18,16 @@ param (
 
 . .\Utils\Git.ps1
 
-# $svnConfigs = Get-GitSVNConfigs -RepoDirectory $GitRepoDirectory
+$tfsConfigs = Get-GitTfsConfigs -RepoDirectory $GitRepoDirectory
 
-# if($svnConfigs.Count -lt 4){
-#     Write-Error "Failed to fetch from TFS. Reason: The repo '$($GitRepoDirectory.Name)' has not been properly initialized."
-#     Exit
-# }
+if($tfsConfigs.Count -lt 4){
+    Write-Error "Failed to fetch from TFS. Reason: The repo '$($GitRepoDirectory.Name)' has not been properly initialized."
+    Exit
+}
 
 Measure-Command {
     try {
-        Fetch-GitTfs -Changeset $Changeset -RepoDirectory $GitRepoDirectory
+        Pull-GitTfs -Changeset $Changeset -RepoDirectory $GitRepoDirectory
 
         Write-Host "Pull succeeded." -ForegroundColor Green
     }

@@ -39,6 +39,10 @@ function Get-GitSVNConfigs([System.IO.FileInfo]$RepoDirectory) {
     Get-GitConfigs -NamePattern "^svn" -RepoDirectory $RepoDirectory
 }
 
+function Get-GitTfsConfigs([System.IO.FileInfo]$RepoDirectory) {
+    Get-GitConfigs -NamePattern "tfs" -RepoDirectory $RepoDirectory
+}
+
 function Get-GitConfigs ([string] $NamePattern, [System.IO.FileInfo]$RepoDirectory) {
     $cmd = Execute-Git -ArgumentList "config --get-regexp ""$NamePattern""" -RepoDirectory $RepoDirectory
 
@@ -108,13 +112,20 @@ function Fetch-GitSVN {
     }
 }
 
-function Fetch-GitTfs {
+function Cleanup-GitTfs([System.IO.FileInfo]$RepoDirectory){
+    $cmd = Execute-Git -ArgumentList "tfs cleanup" -RepoDirectory $RepoDirectory
+    if ($cmd.ExitCode -gt 0) {
+        throw "$($cmd.StandardError)"
+    }
+}
+
+function Pull-GitTfs {
     param (
         [Parameter(Mandatory = $true)]
         [ValidatePattern("^\d+$")]
         [string] $Changeset,
         [Parameter()]
-        [System.IO.FileInfo]$RepoDirectory
+        [System.IO.FileInfo] $RepoDirectory
     )
 
     $cmd = Execute-Git -ArgumentList "tfs pull -c $($Changeset)" -RepoDirectory $RepoDirectory

@@ -1,10 +1,10 @@
 . .\Utils\Process.ps1
 
 function Create-GithubRepo([string] $Name, [string]$Description, [string] $Team, [System.IO.FileInfo]$RepoDirectory){
-    $argList = "$Name --description $Description --confirm --private"
+    $argList = "repo create ""$Name"" --description ""$Description"" --confirm --private"
     
     if(![string]::IsNullOrWhiteSpace($Team)){
-        $argList = $argList + "--team $Team"
+        $argList = $argList + "--team ""$Team"""
     }
 
     $cmd = Execute-Github -ArgumentList $argList -RepoDirectory $RepoDirectory

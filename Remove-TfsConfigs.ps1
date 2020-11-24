@@ -21,9 +21,11 @@ param (
 . .\Utils\Git.ps1
 
 if ($PSCmdlet.ShouldProcess("TFS configs", "delete")) {
+    Cleanup-GitTfs -RepoDirectory $GitRepoDirectory
+    
     Remove-GitTfsConfigs -RepoDirectory $GitRepoDirectory
 
-    Write-Host "Successfully cleaned up TFS related configs" -ForegroundColor Green
+    Write-Host "Successfully removed TFS related configs" -ForegroundColor Green
 }else{
     Write-Warning "Operation aborted by user."
 }
