@@ -20,7 +20,7 @@ param (
 
 $tfsConfigs = Get-GitTfsConfigs -RepoDirectory $GitRepoDirectory
 
-if($tfsConfigs.Count -lt 4){
+if($tfsConfigs.Count -lt 7){
     Write-Error "Failed to fetch from TFS. Reason: The repo '$($GitRepoDirectory.Name)' has not been properly initialized."
     Exit
 }
