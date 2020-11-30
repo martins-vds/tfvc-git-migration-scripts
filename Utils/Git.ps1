@@ -22,7 +22,13 @@ function Create-Branch ([string] $BaseBranch, [string] $NewBranch, [System.IO.Fi
 }
 
 function List-Branches([System.IO.FileInfo]$RepoDirectory, [bool] $Remote = $false){
-    $cmd = Execute-Git -ArgumentList "branch $($Remote ? '-r' : '')" -RepoDirectory $RepoDirectory
+    if ($Remote) {
+        $remoteArg = "-r"
+    }else{
+        $remoteArg = ""
+    }
+    
+    $cmd = Execute-Git -ArgumentList "branch $remoteArg" -RepoDirectory $RepoDirectory
 
     $output = $cmd.StandardOutput
 
