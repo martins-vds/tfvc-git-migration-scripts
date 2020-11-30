@@ -14,7 +14,10 @@ param (
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [string]
-    $Description,
+    $Description,    
+    [Parameter(Mandatory = $true)]
+    [string]
+    $Organization,
     [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]
@@ -36,7 +39,7 @@ try {
 
     Write-Host "Creating Github repo..." -ForegroundColor White
 
-    $output = Create-GithubRepo -Name $Name -Description $Description -Team $Team -RepoDirectory $GitRepoDirectory
+    $output = Create-GithubRepo -Name $Name -Description $Description -Organization $Organization -Team $Team -RepoDirectory $GitRepoDirectory
     
     Write-Host "Successfully created Github repo: $($output.StandardOutput)" -ForegroundColor Green
 }
