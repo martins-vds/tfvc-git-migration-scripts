@@ -20,7 +20,7 @@ git pull --recurse-submodules
 ## Execution Sequence
 1. Initialize the local git repo which will be the target of the TFVC migration. Example:
 ```posh
-.\Init-LocalRepo.ps1 -GitRepoDirectory "c:\path\to\local\git\folder" -TfsUrl "https://contoso.com/tfs/defaultcollection" -TfsRepoPah "$/Contoso/Trunk" -IgnoreFile "c:\path\to\gitignore"
+.\Init-LocalRepo.ps1 -GitRepoDirectory "c:\path\to\local\git\folder" -TfsUrl "https://contoso.com/tfs/defaultcollection" -TfsRepoPath "$/Contoso/Trunk" -IgnoreFile "c:\path\to\gitignore"
 ```
 2. Initialize the Github repo which will host the migrated code. Example
 ```posh
