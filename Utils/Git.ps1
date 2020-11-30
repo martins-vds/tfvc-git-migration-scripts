@@ -40,7 +40,13 @@ function List-Branches([System.IO.FileInfo]$RepoDirectory, [bool] $Remote = $fal
 }
 
 function Delete-Branch ([string] $Branch, [System.IO.FileInfo]$RepoDirectory, [bool] $Remote = $false) {
-    Execute-Git -ArgumentList "branch $($Remote ? '-r' : '') -D $Branch" -RepoDirectory $RepoDirectory
+    if ($Remote) {
+        $remoteArg = "-r"
+    }else{
+        $remoteArg = ""
+    }
+
+    Execute-Git -ArgumentList "branch $remoteArg -D $Branch" -RepoDirectory $RepoDirectory
 }
 
 function Get-GitConfigs ([string] $NamePattern, [System.IO.FileInfo]$RepoDirectory) {
