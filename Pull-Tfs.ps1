@@ -38,6 +38,12 @@ Measure-Command {
         Pull-GitTfs -Changeset $Changeset -RepoDirectory $GitRepoDirectory | Out-Null
 
         Write-Host "Successfully pulled from TFS." -ForegroundColor Green
+
+        Write-Host "Optimizing local Git repo (this may take some time)..." -ForegroundColor White
+
+        Run-GarbageCollection -RepoDirectory $GitRepoDirectory | Out-Null
+
+        Write-Host "Successfully optimized local Git repo." -ForegroundColor Green
     }
     catch {
         Write-Error "Failed to pull from TFS. Reason: $($_)"

@@ -90,6 +90,10 @@ function Push-Git ([System.IO.FileInfo]$RepoDirectory) {
     Execute-Git -ArgumentList "push origin --tags" -RepoDirectory $RepoDirectory
 }
 
+function Run-GarbageCollection ([System.IO.FileInfo]$RepoDirectory) {
+    Execute-Git -ArgumentList "gc --prune=all --aggressive" -RepoDirectory $RepoDirectory
+}
+
 function Execute-Git([string]$ArgumentList, [System.IO.FileInfo]$RepoDirectory) {
     $cmd = $null
     
