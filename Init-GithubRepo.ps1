@@ -28,7 +28,7 @@ if (-Not (Test-Path -Path $GitRepoDirectory)) {
 }
 
 try {
-    Write-Host "Loging in..." -ForegroundColor White
+    Write-Host "Logging in..." -ForegroundColor White
 
     Login-Github -Token $Token -RepoDirectory $GitRepoDirectory | Out-Null
 

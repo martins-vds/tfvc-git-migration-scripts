@@ -4,7 +4,7 @@ function Create-GithubRepo([string] $Name, [string]$Description, [string] $Team,
     $argList = "repo create ""$Name"" --description ""$Description"" --confirm --private"
     
     if(![string]::IsNullOrWhiteSpace($Team)){
-        $argList = $argList + "--team ""$Team"""
+        $argList = $argList + " --team ""$Team"""
     }
 
     Execute-Github -ArgumentList $argList -RepoDirectory $RepoDirectory
