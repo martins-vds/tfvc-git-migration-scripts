@@ -24,7 +24,7 @@ git pull --recurse-submodules
 ```
 2. Initialize the Github repo which will host the migrated code. Example
 ```posh
-.\Init-GithubRepo.ps1 -GitRepoDirectory "c:\path\to\local\git\folder" -Token "authTokenGoesHere" -Name "NameOfRepoGoesHere" -Description "DescriptionOfRepoGoesHere" -Team "TeamAssignedToRepo"
+.\Init-GithubRepo.ps1 -GitRepoDirectory "c:\path\to\local\git\folder" -Token "authTokenGoesHere" -Name "NameOfRepoGoesHere" -Description "DescriptionOfRepoGoesHere" -Team "TeamAssignedToRepo" -Organization "OrgNameGoesHere"
 ```
 
 - *The "Team" argument is **optional***
