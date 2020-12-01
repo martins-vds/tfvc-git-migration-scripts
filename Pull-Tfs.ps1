@@ -2,7 +2,15 @@
 param (
     [Parameter(Mandatory = $true)]    
     [ValidatePattern("^\d+$")]
-    [string]$Changeset,  
+    [string]$Changeset,
+    [ValidateScript( {
+        if (-Not ($_ | Test-Path -PathType Leaf) ) {
+            throw "The Path argument must be a file. Folder paths are not allowed."
+        }
+
+        return $true
+    })]
+    [System.IO.FileInfo] $IgnoreFile,
     [Parameter(Mandatory = $true)]
     [ValidateScript( {
             if ( -Not ($_ | Test-Path) ) {
@@ -35,7 +43,7 @@ Measure-Command {
     try {
         Write-Host "Pulling from TFS..." -ForegroundColor White
 
-        Pull-GitTfs -Changeset $Changeset -RepoDirectory $GitRepoDirectory | Out-Null
+        Pull-GitTfs -Changeset $Changeset -IgnoreFile $IgnoreFile -RepoDirectory $GitRepoDirectory | Out-Null
 
         Write-Host "Successfully pulled from TFS." -ForegroundColor Green
 

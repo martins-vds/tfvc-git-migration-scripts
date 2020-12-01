@@ -10,9 +10,6 @@ function Get-GitTfsConfigs([System.IO.FileInfo]$RepoDirectory) {
 
 function Init-GitTfs ([System.Uri] $TfsUrl, [string] $TfsRepoPath, [System.IO.FileInfo] $IgnoreFile, [System.IO.FileInfo]$RepoDirectory) {
     Execute-GitTfs -ArgumentList "init --autocrlf=true --gitignore=""$IgnoreFile"" $TfsUrl ""$TfsRepoPath""" -RepoDirectory $RepoDirectory
-    Copy-Item -Path $IgnoreFile -Destination $GitRepoDirectory -Force
-    Rename-Item -Path $RepoDirectory\$($IgnoreFile.Name) -NewName ".gitignore"
-    Stage-File -File ".gitignore" -RepoDirectory $RepoDirectory  
 }
 
 function Pull-GitTfs {
@@ -21,8 +18,14 @@ function Pull-GitTfs {
         [ValidatePattern("^\d+$")]
         [string] $Changeset,
         [Parameter()]
+        [System.IO.FileInfo] $IgnoreFile,
+        [Parameter()]
         [System.IO.FileInfo] $RepoDirectory
     )
+
+    Copy-Item -Path $IgnoreFile -Destination $RepoDirectory -Force
+    Rename-Item -Path $RepoDirectory\$($IgnoreFile.Name) -NewName ".gitignore"
+    Stage-File -File ".gitignore" -RepoDirectory $RepoDirectory 
 
     Execute-GitTfs -ArgumentList "pull -c $($Changeset)" -RepoDirectory $RepoDirectory
 }
