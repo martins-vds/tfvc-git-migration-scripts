@@ -34,7 +34,7 @@ git pull --recurse-submodules
 
 3. Pull from TFS. Example:
 ```posh
-.\Pull-Tfs.ps1 -Changeset 1234 -GitRepoDirectory "c:\path\to\local\git\folder"
+.\Pull-Tfs.ps1 -Changeset 1234 -IgnoreFile "c:\path\to\gitignore" -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
 > :warning::warning::warning:
 > MAKE SURE THAT THE CODE BUILDS CORRECTLY BEFORE MOVING ON TO THE NEXT STEP
