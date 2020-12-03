@@ -23,11 +23,12 @@ function Pull-GitTfs {
         [System.IO.FileInfo] $RepoDirectory
     )
 
+    Execute-GitTfs -ArgumentList "pull -c $($Changeset) --gitignore=$IgnoreFile" -RepoDirectory $RepoDirectory
+    
     Copy-Item -Path $IgnoreFile -Destination $RepoDirectory -Force
     Rename-Item -Path $RepoDirectory\$($IgnoreFile.Name) -NewName ".gitignore"
-    Stage-File -File ".gitignore" -RepoDirectory $RepoDirectory 
-
-    Execute-GitTfs -ArgumentList "pull -c $($Changeset)" -RepoDirectory $RepoDirectory
+    
+    Stage-File -File ".gitignore" -RepoDirectory $RepoDirectory
 }
 
 function Remove-GitTfsConfigs([System.IO.FileInfo]$RepoDirectory){
