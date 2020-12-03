@@ -49,7 +49,7 @@ Measure-Command {
 
         Write-Host "Optimizing local Git repo (this may take some time)..." -ForegroundColor White
 
-        Run-GarbageCollection -RepoDirectory $GitRepoDirectory | Out-Null
+        Run-Optimization -RepoDirectory $GitRepoDirectory | Out-Null
 
         Write-Host "Successfully optimized local Git repo." -ForegroundColor Green
     }

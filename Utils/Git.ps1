@@ -102,8 +102,11 @@ function Push-Git ([System.IO.FileInfo]$RepoDirectory) {
     Execute-Git -ArgumentList "push origin --tags" -RepoDirectory $RepoDirectory
 }
 
-function Run-GarbageCollection ([System.IO.FileInfo]$RepoDirectory) {
-    Execute-Git -ArgumentList "gc --prune=all --aggressive" -RepoDirectory $RepoDirectory
+function Run-Optimization ([System.IO.FileInfo]$RepoDirectory) {
+    Execute-Git -ArgumentList "repack" -RepoDirectory $RepoDirectory
+    Execute-Git -ArgumentList "prune-packed" -RepoDirectory $RepoDirectory
+    Execute-Git -ArgumentList "reflog expire --expire=now" -RepoDirectory $RepoDirectory
+    Execute-Git -ArgumentList "gc --prune=now --aggressive" -RepoDirectory $RepoDirectory
 }
 
 function Execute-Git([string]$ArgumentList, [System.IO.FileInfo]$RepoDirectory) {
