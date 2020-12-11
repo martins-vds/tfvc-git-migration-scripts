@@ -37,8 +37,10 @@ git pull --recurse-submodules
 .\Pull-Tfs.ps1 -Changeset 1234 -IgnoreFile "c:\path\to\gitignore" -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
 > :warning::warning::warning:
-> MAKE SURE THAT THE CODE BUILDS CORRECTLY BEFORE MOVING ON TO THE NEXT STEP
+> MAKE SURE THAT THE CODE BUILDS CORRECTLY
+> COMMIT EVERY CHANGE BEFORE MOVING ON TO THE NEXT STEP
 > :warning::warning::warning:
+
 4. Initialize GitVersion. Example:
 ```posh
 .\Init-GitVersion.ps1 -NextVersion 1.0.0 -GitRepoDirectory "c:\path\to\local\git\folder"
