@@ -29,6 +29,8 @@ function Pull-GitTfs {
     Rename-Item -Path $RepoDirectory\$($IgnoreFile.Name) -NewName ".gitignore"
     
     Stage-File -File ".gitignore" -RepoDirectory $RepoDirectory
+
+    Create-Commit -Message "Add .gitignore" -RepoDirectory $RepoDirectory
 }
 
 function Remove-GitTfsConfigs([System.IO.FileInfo]$RepoDirectory){
