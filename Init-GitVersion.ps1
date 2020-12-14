@@ -24,10 +24,7 @@ try {
     Copy-Item -Path .\GitVersion.yml -Destination $GitRepoDirectory -Force | Out-Null   
     Stage-File -File .\GitVersion.yml -RepoDirectory $GitRepoDirectory | Out-Null
     Create-Commit -Message "Added GitVersion" -RepoDirectory $GitRepoDirectory | Out-Null
-    Create-Tag -Tag $NextVersion -RepoDirectory $GitRepoDirectory | Out-Null
-
-    Create-Branch -BaseBranch master -NewBranch dev -RepoDirectory $GitRepoDirectory | Out-Null
-
+    
     Write-Host "Successfully initialized GitVersion." -ForegroundColor Green
 }
 catch {

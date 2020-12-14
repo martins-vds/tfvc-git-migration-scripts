@@ -49,7 +49,7 @@ git pull --recurse-submodules
 
 5. Initialize Git Flow. Example:
 ```posh
-.\Init-GitFlow.ps1 -GitRepoDirectory "c:\path\to\local\git\folder"
+.\Init-GitFlow.ps1 -NextVersion 1.0.0 -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
 
 6. Push the local git repo to Github. Example:

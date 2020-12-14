@@ -1,5 +1,8 @@
 [CmdletBinding()]
-param (     
+param (
+    [Parameter(Mandatory = $true)]
+    [ValidatePattern("^\d+(\.\d+){2,3}$")]
+    [string]$NextVersion,
     [Parameter(Mandatory = $true)]
     [ValidateScript( {
             if ( -Not ($_ | Test-Path) ) {
@@ -18,6 +21,7 @@ param (
 try {
     Write-Host "Initializing Git Flow..." -ForegroundColor White
 
+    Create-Tag -Tag $NextVersion -RepoDirectory $GitRepoDirectory | Out-Null
     Create-Branch -BaseBranch master -NewBranch dev -RepoDirectory $GitRepoDirectory | Out-Null
 
     Write-Host "Successfully initialized Git Flow." -ForegroundColor Green
