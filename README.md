@@ -36,20 +36,28 @@ git pull --recurse-submodules
 ```posh
 .\Pull-Tfs.ps1 -Changeset 1234 -IgnoreFile "c:\path\to\gitignore" -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
-> :warning::warning::warning:
-> MAKE SURE THAT THE CODE BUILDS CORRECTLY
-> COMMIT EVERY CHANGE BEFORE MOVING ON TO THE NEXT STEP
-> :warning::warning::warning:
 
 4. Initialize GitVersion. Example:
 ```posh
 .\Init-GitVersion.ps1 -NextVersion 1.0.0 -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
-5. Push the local git repo to Github. Example:
+
+> :warning::warning::warning:
+> MAKE SURE THAT THE CODE BUILDS CORRECTLY
+> COMMIT EVERY CHANGE BEFORE MOVING ON TO THE NEXT STEP
+> :warning::warning::warning:
+
+5. Initialize Git Flow. Example:
+```posh
+.\Init-GitFlow.ps1 -GitRepoDirectory "c:\path\to\local\git\folder"
+```
+
+6. Push the local git repo to Github. Example:
 ```posh
 .\Push-Github.ps1 -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
-6. Cleanup TFS related configs. Example:
+
+7. Cleanup TFS related configs. Example:
 ```posh
 .\Cleanup-TfsConfigs.ps1 -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
