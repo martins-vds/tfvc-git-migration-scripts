@@ -39,7 +39,7 @@ git pull --recurse-submodules
 
 4. Initialize GitVersion. Example:
 ```posh
-.\Init-GitVersion.ps1 -NextVersion 1.0.0 -GitRepoDirectory "c:\path\to\local\git\folder"
+.\Init-GitVersion.ps1 -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
 
 > :warning::warning::warning:

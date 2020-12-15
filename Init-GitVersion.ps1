@@ -1,9 +1,6 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $true)]
-    [ValidatePattern("^\d+(\.\d+){2,3}$")]
-    [string]$NextVersion,  
-    [Parameter(Mandatory = $true)]
     [ValidateScript( {
             if ( -Not ($_ | Test-Path) ) {
                 throw "Folder does not exist"
