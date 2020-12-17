@@ -47,17 +47,22 @@ git pull --recurse-submodules
 > COMMIT EVERY CHANGE BEFORE MOVING ON TO THE NEXT STEP
 > :warning::warning::warning:
 
-5. Initialize Git Flow. Example:
+5. Set Next Version. Example:
 ```posh
-.\Init-GitFlow.ps1 -NextVersion 1.0.0 -GitRepoDirectory "c:\path\to\local\git\folder"
+.\Set-NextVersion.ps1 -NextVersion 1.0.0 -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
 
-6. Push the local git repo to Github. Example:
+6. Initialize Git Flow. Example:
+```posh
+.\Init-GitFlow.ps1 -GitRepoDirectory "c:\path\to\local\git\folder"
+```
+
+7. Push the local git repo to Github. Example:
 ```posh
 .\Push-Github.ps1 -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
 
-7. Cleanup TFS related configs. Example:
+8. Cleanup TFS related configs. Example:
 ```posh
 .\Cleanup-TfsConfigs.ps1 -GitRepoDirectory "c:\path\to\local\git\folder"
 ```
