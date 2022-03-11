@@ -43,8 +43,7 @@ Measure-Command {
     try {
         Write-Host "Pulling from TFS..." -ForegroundColor White
 
-        #Pull-GitTfs -Changeset $Changeset -IgnoreFile $IgnoreFile -RepoDirectory $GitRepoDirectory | Out-Null
-        Pull-GitTfs -Changeset $Changeset -IgnoreFile $IgnoreFile -RepoDirectory $GitRepoDirectory
+        Pull-GitTfs -Changeset $Changeset -IgnoreFile $IgnoreFile -RepoDirectory $GitRepoDirectory | Out-Null
 
         Write-Host "Successfully pulled from TFS." -ForegroundColor Green
 
